@@ -2,6 +2,10 @@
 
 /* ☕ Roasted Coffee & Cream Theme */
 @theme {
+  /* Fonts */
+  --font-heading: var(--font-crimson-pro);
+  --font-inter: var(--font-inter);
+
   /* Main backgrounds */
   --color-cream: #f7f1e8;
   --color-latte: #f1e2cf;
@@ -37,4 +41,28 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Nav Link Underline */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-heritage-gold, #C5A059);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active::after {
+  width: 100%;
 }
