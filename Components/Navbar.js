@@ -25,7 +25,7 @@ const Navbar = () => {
           </Link>
           <div className="text flex-row">
             <span className='text-espresso  cursor-pointer'><Link href="/">GetMeACoffee</Link></span>
-            <p className='text-mocha text-sm font-semibold cursor-default'>Support Creators. Fuel Ideas</p>
+            <p className='text-mocha text-sm font-semibold cursor-default'>Support Creators. Fuel Ideas.</p>
           </div>
         </div>
         <div className="flex text-lg font-bold space-x-9 ">

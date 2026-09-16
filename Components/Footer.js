@@ -21,7 +21,7 @@ const Footer = () => {
   const navLinkClass = (href) => `nav-link ${pathname === href ? 'active text-warm-white' : 'text-soft-latte hover:text-warm-white'} font-label-md text-label-md transition-colors duration-200`
 
   return (
-    <nav className="fixed bottom-0 z-10 bg-espresso border-t border-coffee-border w-full text-warm-white">
+    <footer className=" z-10 bg-espresso border-t border-coffee-border w-full text-warm-white">
       <div className='flex justify-between items-center p-4 py-3 px-5 w-full mx-auto'>
         <div className="logo flex items-center gap-3 text-2xl font-bold">
           <Link className="img cursor-pointer flex items-center bg-coffee p-2 rounded-xl" href="/">
@@ -90,7 +90,7 @@ const Footer = () => {
           </span>
         </p>
       </div>
-    </nav>
+    </footer>
   )
 }
 
