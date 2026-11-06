@@ -43,6 +43,35 @@ body {
   color: var(--foreground);
 }
 
+/* Global scrollbar styling for Firefox and Chromium-based browsers */
+* {
+  scrollbar-color: var(--color-soft-latte) var(--color-cream);
+  scrollbar-width: thin;
+}
+
+*:hover {
+  scrollbar-color: var(--color-coffee) var(--color-cream);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-cream);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-soft-latte);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-coffee);
+}
+
 /* Nav Link Underline */
 .nav-link {
   position: relative;

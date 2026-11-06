@@ -1,5 +1,7 @@
 import { Inter, Crimson_Pro } from "next/font/google";
 import "./globals.css";
+import SessionWrapper from "@/Components/SessionWrapper";
+
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
 
@@ -22,11 +24,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    
     <html
       lang="en"
       className={` ${crimsonPro.variable} ${inter.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col"><Navbar/>{children}<Footer/></body>
+    ><SessionWrapper>
+      <body className="min-h-full flex flex-col"><Navbar/>{children}</body>
+    </SessionWrapper>
     </html>
   );
 }

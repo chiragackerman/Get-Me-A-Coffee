@@ -1,8 +1,12 @@
+import Footer from "@/Components/Footer";
 import Image from "next/image";
+import SessionWrapper from "@/Components/SessionWrapper";
+import Navbar from "@/Components/Navbar";
 
 export default function Home() {
   return (
     <>
+    <SessionWrapper>
       <div className="hero border-b border-coffee-border relative h-[70vh] overflow-hidden bg-[#f8ecd9]">
         <img className="h-full w-full object-contain object-right" src="/CafeBg.png" alt="Cafe background" />
         <div className="text-content absolute top-[22%] left-[10%]">
@@ -356,6 +360,8 @@ export default function Home() {
           </ul>
         </div>
       </div>
+      <Footer/>
+      </SessionWrapper>
     </>
   );
 }
