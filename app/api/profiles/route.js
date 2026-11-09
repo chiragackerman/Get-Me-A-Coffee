@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import connectToDatabase from "@/server/db";
@@ -383,6 +384,8 @@ export async function POST(request) {
     } finally {
       await databaseSession.endSession();
     }
+
+    revalidatePath("/");
 
     return Response.json(
       {

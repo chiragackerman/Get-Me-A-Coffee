@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/server/auth";
 import connectToDatabase from "@/server/db";
 import CreatorProfile from "@/server/models/user";
+import BuyThemCoffee from "./BuyThemCoffee";
 import ProfilePicture from "./ProfilePicture";
 import ProfileNavigation from "./ProfileNavigation";
 
@@ -10,7 +13,7 @@ async function getCreatorProfile(username) {
   await connectToDatabase();
 
   return CreatorProfile.findOne({ username })
-    .select("profileImage displayName username creatorCategory description createdAt")
+    .select("authUserId profileImage displayName username creatorCategory description createdAt")
     .lean();
 }
 
@@ -125,10 +128,19 @@ export default async function CreatorProfilePage({ params }) {
     notFound();
   }
 
+  const session = await getServerSession(authOptions);
+  const isOwnProfile = session?.user?.id === profile.authUserId;
+
   return (
     <main className="flex flex-1 items-stretch bg-cream px-4 py-5 sm:px-6 sm:py-7 lg:px-[clamp(2rem,3vw,3.5rem)] lg:py-[clamp(1.5rem,3vh,2.5rem)]">
-      <div className="grid w-full grid-cols-1 items-stretch gap-5 lg:flex-1 lg:grid-cols-[clamp(248px,18vw,360px)_minmax(0,1fr)]">
-        <ProfileNavigation username={profile.username} />
+      <div
+        className={`grid w-full grid-cols-1 items-stretch gap-5 ${
+          isOwnProfile
+            ? "lg:flex-1 lg:grid-cols-[clamp(248px,18vw,360px)_minmax(0,1fr)]"
+            : ""
+        }`}
+      >
+        {isOwnProfile && <ProfileNavigation username={profile.username} />}
 
         <div className="grid min-w-0 gap-5 lg:flex lg:flex-col">
           <section className="relative isolate flex min-h-[15rem] items-center overflow-hidden rounded-2xl border border-coffee-border px-6 py-8 shadow-sm sm:min-h-[12.5rem] sm:px-8">
@@ -235,6 +247,8 @@ export default async function CreatorProfilePage({ params }) {
             </section>
           </div>
 
+          {!isOwnProfile && <BuyThemCoffee />}
+
           <section className="flex flex-col  items-center gap-5 rounded-2xl border border-latte bg-latte px-6 py-5 sm:flex-row sm:justify-between sm:px-8">
             <div className="flex items-center gap-5 text-center sm:text-left">
               <Image
@@ -253,14 +267,6 @@ export default async function CreatorProfilePage({ params }) {
                 </p>
               </div>
             </div>
-            <button
-              className="shrink-0 cursor-not-allowed rounded-full bg-coffee px-6 py-3 text-sm font-semibold text-warm-white opacity-80"
-              disabled
-              title="Coffee support is coming soon"
-              type="button"
-            >
-              Buy Me a Coffee · Coming Soon
-            </button>
           </section>
         </div>
       </div>
