@@ -20,6 +20,35 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Date and time handling
+
+Keep MongoDB timestamps as UTC `Date` values. Mongoose's `timestamps: true`
+and JavaScript's `new Date()` already represent instants correctly; do not add
+the IST offset before saving. Use the shared helpers in `lib/dateTime.js` when
+displaying dates so formatting always uses `Asia/Kolkata`, regardless of the
+visitor's browser timezone:
+
+```js
+import { formatDateTimeIST } from "@/lib/dateTime";
+
+formatDateTimeIST(profile.createdAt);
+```
+
+For a date filter supplied as an Indian calendar date (`YYYY-MM-DD`), use its
+IST day boundaries with a half-open MongoDB range:
+
+```js
+import { getISTDayRange } from "@/lib/dateTime";
+
+const { start, endExclusive } = getISTDayRange("2025-03-08");
+const records = await Model.find({
+  createdAt: { $gte: start, $lt: endExclusive },
+});
+```
+
+The returned bounds are UTC `Date` objects corresponding to midnight at the
+start of that IST date and midnight at the next IST date.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

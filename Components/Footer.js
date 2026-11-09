@@ -7,6 +7,7 @@ import { Player } from '@lordicon/react'
 import GithubIcon from '../public/github_logo.json'
 import InstagramIcon from '../public/instagram_logo.json'
 import YoutubeIcon from '../public/youtube_logo.json'
+import { formatDateIST } from '@/lib/dateTime'
 
 const Footer = () => {
   const githubIconRef = useRef(null)
@@ -81,7 +82,7 @@ const Footer = () => {
       </div>
       <hr className="border-coffee w-[98%] mx-auto my-1" />
       <div className="cursor-default px-6 py-3 flex justify-between text-soft-latte">
-        <p>&copy; {new Date().getFullYear()} GetMeACoffee. All rights reserved.</p>
+        <p>&copy; {formatDateIST(new Date(), { year: 'numeric' })} GetMeACoffee. All rights reserved.</p>
         <p className="text-center sm:text-right pr-2">
           Built with <span className="text-[#C47A44]">☕</span> &{" "}
           <span className="text-[#C47A44]">❤️</span> by{" "}

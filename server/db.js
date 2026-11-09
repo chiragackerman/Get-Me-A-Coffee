@@ -1,3 +1,4 @@
+import "server-only";
 import mongoose from "mongoose";
 import CreatorProfile from "@/server/models/user";
 import SignedInUser from "@/server/models/signedInUser";
