@@ -10,6 +10,16 @@ import Transaction from "../server/models/Transaction.js";
 const coffeePriceInPaise = 2000;
 const allowedQuantities = new Set([1, 2, 3, 5, 10]);
 
+function getPaymentReceipt(payment) {
+    return {
+        verified: true,
+        orderId: payment.razorpay_order_id,
+        paymentId: payment.razorpay_payment_id,
+        amountInPaise: payment.amountInPaise,
+        currency: payment.currency,
+    };
+}
+
 function getRazorpayClient() {
     const keyId = process.env.KEY_ID;
     const keySecret = process.env.KEY_SECRET;
@@ -107,7 +117,7 @@ export async function verifyRazorpayPayment(orderId, paymentId, signature) {
     }
 
     if (existingPayment && transaction.status === "paid") {
-        return { verified: true };
+        return getPaymentReceipt(existingPayment);
     }
 
     let gatewayPayment = await client.payments.fetch(paymentId);
@@ -166,5 +176,5 @@ export async function verifyRazorpayPayment(orderId, paymentId, signature) {
         await transaction.save();
     }
 
-    return { verified: true };
+    return getPaymentReceipt(savedPayment);
 }

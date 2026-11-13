@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { initiateRazorpay, verifyRazorpayPayment } from "../actions/useractions";
 
@@ -12,8 +12,15 @@ const PaymentPage = ({ creatorUsername, isTestMode }) => {
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const [receipt, setReceipt] = useState(null);
+    const successDialogRef = useRef(null);
     const total = quantity * coffeePrice;
+
+    useEffect(() => {
+        if (receipt && !successDialogRef.current?.open) {
+            successDialogRef.current?.showModal();
+        }
+    }, [receipt]);
 
     const pay = async () => {
         if (!window.Razorpay) {
@@ -23,7 +30,7 @@ const PaymentPage = ({ creatorUsername, isTestMode }) => {
 
         setIsProcessing(true);
         setErrorMessage("");
-        setSuccessMessage("");
+        setReceipt(null);
 
         try {
             const order = await initiateRazorpay(quantity, creatorUsername);
@@ -37,12 +44,12 @@ const PaymentPage = ({ creatorUsername, isTestMode }) => {
                 theme: { color: "#3399cc" },
                 handler: async (response) => {
                     try {
-                        await verifyRazorpayPayment(
+                        const paymentReceipt = await verifyRazorpayPayment(
                             response.razorpay_order_id,
                             response.razorpay_payment_id,
                             response.razorpay_signature,
                         );
-                        setSuccessMessage("Payment successful. Thank you for your support!");
+                        setReceipt(paymentReceipt);
                     } catch (error) {
                         console.error("Could not verify the Razorpay payment.", error);
                         setErrorMessage(
@@ -145,12 +152,56 @@ const PaymentPage = ({ creatorUsername, isTestMode }) => {
                         {errorMessage}
                     </p>
                 )}
-                {successMessage && (
-                    <p className="mt-4 text-sm text-green-700" role="status">
-                        {successMessage}
-                    </p>
-                )}
             </section>
+            <dialog
+                aria-labelledby="payment-success-title"
+                className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-lg rounded-3xl border border-coffee-border bg-warm-white p-0 text-espresso shadow-2xl backdrop:bg-espresso/60"
+                ref={successDialogRef}
+                onClose={() => setReceipt(null)}
+            >
+                {receipt && (
+                    <div className="p-6 sm:p-8">
+                        <p className="text-sm font-semibold uppercase tracking-wide text-green-700">
+                            Payment complete
+                        </p>
+                        <h2
+                            className="mt-2 font-heading text-2xl font-bold text-espresso"
+                            id="payment-success-title"
+                        >
+                            Thank you for your support!
+                        </h2>
+                        <p className="mt-2 text-sm leading-6 text-mocha">
+                            Your payment of{" "}
+                            {new Intl.NumberFormat("en-IN", {
+                                style: "currency",
+                                currency: receipt.currency,
+                            }).format(receipt.amountInPaise / 100)}{" "}
+                            has been confirmed.
+                        </p>
+                        <dl className="mt-5 space-y-3 rounded-xl bg-cream p-4 text-sm">
+                            <div>
+                                <dt className="font-semibold text-mocha">Razorpay order ID</dt>
+                                <dd className="mt-1 break-all font-mono text-espresso">
+                                    {receipt.orderId}
+                                </dd>
+                            </div>
+                            <div>
+                                <dt className="font-semibold text-mocha">Payment ID</dt>
+                                <dd className="mt-1 break-all font-mono text-espresso">
+                                    {receipt.paymentId}
+                                </dd>
+                            </div>
+                        </dl>
+                        <button
+                            className="mt-6 w-full rounded-full bg-coffee px-6 py-3 font-semibold text-warm-white transition-colors hover:bg-dark-roast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coffee"
+                            onClick={() => successDialogRef.current?.close()}
+                            type="button"
+                        >
+                            Done
+                        </button>
+                    </div>
+                )}
+            </dialog>
         </>
     );
 };
