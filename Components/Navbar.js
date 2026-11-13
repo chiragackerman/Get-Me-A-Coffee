@@ -20,44 +20,42 @@ const Navbar = () => {
 
   return (
     
-  <nav className="sticky top-0 z-10 bg-warm-white border-b border-coffee-border">
-    <div className='flex justify-between items-center p-4 py-3 px-5 w-full mx-auto'>
-      <div className="logo flex items-center gap-3 text-2xl font-bold">
-        <Link className="img cursor-pointer flex items-center bg-coffee p-2 rounded-xl" href="/">
-          <img className="h-8 w-8 " src="/Logo.png" alt="Coffee-Cup" />
+  <nav className="sticky top-0 z-10 border-b border-coffee-border bg-warm-white">
+    <div className='mx-auto flex w-full items-center justify-between gap-2 p-3 px-3 sm:gap-6 sm:p-4 sm:px-5'>
+      <div className="logo flex min-w-0 items-center gap-2 text-xl font-bold sm:gap-3 sm:text-2xl">
+        <Link className="img flex shrink-0 items-center rounded-xl bg-coffee p-2" href="/">
+          <img className="h-8 w-8" src="/Logo.png" alt="Coffee-Cup" />
         </Link>
-        <div className="text flex-row">
-          <span className='text-espresso  cursor-pointer'><Link href="/">GetMeACoffee</Link></span>
-          <p className='text-mocha text-sm font-semibold cursor-default'>Support Creators. Fuel Ideas.</p>
+        <div className="text min-w-0">
+          <span className='block truncate text-espresso'><Link href="/">GetMeACoffee</Link></span>
+          <p className='hidden text-sm font-semibold text-mocha sm:block'>Support Creators. Fuel Ideas.</p>
         </div>
       </div>
-      <div className="flex text-lg font-bold space-x-9 ">
+      <div className="hidden text-lg font-bold space-x-9 md:flex">
         <Link className={navLinkClass('/')} href="/">
           Home
         </Link>
         <Link className={navLinkClass('/about')} href="/about">
           About
         </Link>
-        <Link className={navLinkClass('/projects')} href="/projects">
-          Projects
-        </Link>
         <Link className={navLinkClass('/contact')} href="/contact">
           Contact
         </Link>
       </div>
-      <div className=" flex items-center gap-6 pr-1">
-        <div
-          className="cursor-pointer flex h-8 w-8 items-center justify-center"
+      <div className="flex items-center gap-2 sm:gap-6">
+        <Link
+          aria-label="Search creators"
+          className="flex h-8 w-8 shrink-0 items-center justify-center"
+          href="/creators?focus=search"
           onMouseEnter={replaySearchIcon}
-          role="img"
-          aria-label="Search"
+          title="Search creators"
         >
           <Player ref={searchIconRef} icon={SearchIcon} size={32} />
-        </div>
+        </Link>
         {session ? (
           <Link
             aria-label="Open dashboard"
-            className="flex h-[42px] w-[42px] items-center justify-center overflow-hidden rounded-full border border-coffee-border bg-coffee transition-all duration-200 hover:scale-105 hover:border-coffee hover:shadow-sm"
+            className="flex h-[42px] w-[42px] shrink-0 items-center justify-center overflow-hidden rounded-full border border-coffee-border bg-coffee transition-all duration-200 hover:scale-105 hover:border-coffee hover:shadow-sm"
             href="/dashboard"
             title="Dashboard"
           >
@@ -72,7 +70,7 @@ const Navbar = () => {
             />
           </Link>
         ) : (
-          <Link className="text-lg cursor-pointer rounded-4xl bg-coffee px-6 py-3 font-medium text-warm-white transition-colors hover:bg-dark-roast duration-300" href="/signin">
+          <Link className="cursor-pointer rounded-4xl bg-coffee px-4 py-2 text-sm font-medium text-warm-white transition-colors hover:bg-dark-roast duration-300 sm:px-6 sm:py-3 sm:text-lg" href="/signin">
             Sign In
           </Link>
         )}

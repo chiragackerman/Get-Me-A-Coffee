@@ -138,17 +138,17 @@ export default async function CreatorProfilePage({ params }) {
 
   return (
     <>
-      <main className="flex flex-1 items-stretch bg-cream px-4 py-5 sm:px-6 sm:py-7 lg:px-[clamp(2rem,3vw,3.5rem)] lg:py-[clamp(1.5rem,3vh,2.5rem)]">
+      <main className="flex flex-1 items-stretch bg-cream px-3 py-4 sm:px-5 sm:py-6 lg:px-[clamp(2rem,3vw,3.5rem)] lg:py-[clamp(1.5rem,3vh,2.5rem)]">
         <div
-          className={`grid w-full grid-cols-1 items-stretch gap-5 ${isOwnProfile
+          className={`grid w-full grid-cols-1 items-stretch gap-4 ${isOwnProfile
               ? "lg:flex-1 lg:grid-cols-[clamp(248px,18vw,360px)_minmax(0,1fr)]"
               : ""
             }`}
         >
           {isOwnProfile && <ProfileNavigation username={profile.username} />}
 
-          <div className="grid min-w-0 gap-5 lg:flex lg:flex-col">
-            <section className="relative isolate flex min-h-[15rem] items-center overflow-hidden rounded-2xl border border-coffee-border px-6 py-8 shadow-sm sm:min-h-[12.5rem] sm:px-8">
+          <div className="grid min-w-0 gap-4 lg:flex lg:flex-col">
+            <section className="relative isolate flex min-h-[15rem] items-center overflow-hidden rounded-2xl border border-coffee-border px-4 py-6 shadow-sm sm:min-h-[12.5rem] sm:px-8">
               <Image
                 alt=""
                 className="object-cover object-center"
@@ -159,7 +159,7 @@ export default async function CreatorProfilePage({ params }) {
               />
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-r from-espresso/75 via-espresso/50 to-espresso/20"
+                className="absolute inset-0 bg-gradient-to-r from-espresso/75 via-espresso/60 to-espresso/25"
               />
 
               <div className="relative z-10 flex w-full flex-col items-center gap-5 text-center sm:flex-row sm:gap-7 sm:text-left">
@@ -182,8 +182,15 @@ export default async function CreatorProfilePage({ params }) {
               </div>
             </section>
 
-            <div className="grid h-fit gap-5 xl:grid-cols-[1.15fr_1fr]">
-              <section className=" rounded-2xl border border-coffee-border bg-warm-white p-6 shadow-sm sm:p-7">
+            {!isOwnProfile && (
+              <PaymentPage
+                creatorUsername={profile.username}
+                isTestMode={process.env.KEY_ID?.startsWith("rzp_test_") ?? false}
+              />
+            )}
+
+            <div className="grid h-fit gap-4 xl:grid-cols-[1.15fr_1fr]">
+              <section className="order-2 rounded-2xl border border-coffee-border bg-warm-white p-4 shadow-sm sm:p-6 xl:order-1 xl:p-7">
                 <h2 className="flex items-center gap-3 font-heading text-2xl font-bold text-espresso">
                   <ProfileIcon className="h-5 w-5 text-coffee" type="about" />
                   About Me
@@ -192,22 +199,22 @@ export default async function CreatorProfilePage({ params }) {
                   {profile.description}
                 </p>
 
-                <div className="mt-6 grid grid-cols-3 border-t border-coffee-border pt-5">
-                  <div className="flex gap-2 pr-3 sm:gap-3 sm:pr-5">
+                <div className="mt-6 grid grid-cols-1 gap-4 border-t border-coffee-border pt-5 sm:grid-cols-3">
+                  <div className="flex gap-2 sm:gap-3">
                     <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="supporters" />
                     <div>
                       <p className="font-semibold text-espresso">28</p>
                       <p className="mt-1 text-sm text-mocha">Supporters</p>
                     </div>
                   </div>
-                  <div className="flex gap-2 border-l border-coffee-border px-3 sm:gap-3 sm:px-5">
+                  <div className="flex gap-2 border-t border-coffee-border pt-4 sm:border-l sm:border-t-0 sm:px-3 sm:pt-0 sm:pl-5">
                     <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="coffee" />
                     <div>
                       <p className="font-semibold text-espresso">0</p>
                       <p className="mt-1 text-sm text-mocha">Coffees</p>
                     </div>
                   </div>
-                  <div className="flex gap-2 border-l border-coffee-border pl-3 sm:gap-3 sm:pl-5">
+                  <div className="flex gap-2 border-t border-coffee-border pt-4 sm:border-l sm:border-t-0 sm:px-3 sm:pt-0 sm:pl-5">
                     <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="calendar" />
                     <div>
                       <p className="font-semibold text-espresso">Joined</p>
@@ -219,27 +226,27 @@ export default async function CreatorProfilePage({ params }) {
                 </div>
               </section>
 
-              <section className="rounded-2xl border border-coffee-border bg-warm-white p-6 shadow-sm sm:p-7">
+              <section className="order-1 rounded-2xl border border-coffee-border bg-warm-white p-4 shadow-sm sm:p-6 xl:order-2 xl:p-7">
                 <h2 className="flex items-center gap-3 font-heading text-2xl font-bold text-espresso">
                   <ProfileIcon className="h-5 w-5 text-caramel" type="creator" />
                   Creator Info
                 </h2>
                 <dl className="mt-5 space-y-5">
-                  <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
+                  <div className="grid grid-cols-[minmax(5.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
                     <dt className="flex items-start gap-2 text-mocha">
                       <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="category" />
                       Category
                     </dt>
                     <dd className="font-medium text-espresso">{profile.creatorCategory}</dd>
                   </div>
-                  <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
+                  <div className="grid grid-cols-[minmax(5.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
                     <dt className="flex items-start gap-2 text-mocha">
                       <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="about" />
                       Username
                     </dt>
                     <dd className="break-all font-medium text-espresso">@{profile.username}</dd>
                   </div>
-                  <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
+                  <div className="grid grid-cols-[minmax(5.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
                     <dt className="flex items-start gap-2 text-mocha">
                       <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="calendar" />
                       Joined
@@ -251,13 +258,6 @@ export default async function CreatorProfilePage({ params }) {
                 </dl>
               </section>
             </div>
-
-            {!isOwnProfile && (
-              <PaymentPage
-                creatorUsername={profile.username}
-                isTestMode={process.env.KEY_ID?.startsWith("rzp_test_") ?? false}
-              />
-            )}
 
             <section className="flex flex-col  items-center gap-5 rounded-2xl border border-latte bg-latte px-6 py-5 sm:flex-row sm:justify-between sm:px-8">
               <div className="flex items-center gap-5 text-center sm:text-left">

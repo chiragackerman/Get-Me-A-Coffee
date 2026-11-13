@@ -23,17 +23,17 @@ const Footer = () => {
 
   return (
     <footer className=" z-10 bg-espresso border-t border-coffee-border w-full text-warm-white">
-      <div className='flex justify-between items-center p-4 py-3 px-5 w-full mx-auto'>
-        <div className="logo flex items-center gap-3 text-2xl font-bold">
-          <Link className="img cursor-pointer flex items-center bg-coffee p-2 rounded-xl" href="/">
+      <div className='flex w-full flex-col gap-5 p-4 px-5 py-5 lg:mx-auto lg:flex-row lg:items-center lg:justify-between'>
+        <div className="logo flex items-center gap-3 text-lg font-bold sm:text-2xl">
+          <Link className="img cursor-pointer flex shrink-0 items-center bg-coffee p-2 rounded-xl" href="/">
             <img className="h-8 w-8 " src="/Logo.png" alt="Coffee-Cup" />
           </Link>
-          <div className="text flex-row">
-            <span className='text-warm-white cursor-pointer'><Link href="/">GetMeACoffee</Link></span>
-            <p className='text-soft-latte text-sm font-semibold cursor-default'>Support Creators. Fuel Ideas. Keep the Internet Creative.</p>
+          <div className="text min-w-0">
+            <span className='block text-warm-white cursor-pointer'><Link href="/">GetMeACoffee</Link></span>
+            <p className='text-soft-latte text-xs font-semibold cursor-default sm:text-sm'>Support Creators. Fuel Ideas. Keep the Internet Creative.</p>
           </div>
         </div>
-        <div className="flex text-lg font-medium space-x-9 ">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-base font-medium sm:text-lg lg:gap-x-9">
           <Link className="text-soft-latte hover:text-warm-white transition-colors duration-200" href="/about">
             About
           </Link>
@@ -47,7 +47,7 @@ const Footer = () => {
             Contact
           </Link>
         </div>
-        <div className="flex w-[15%] justify-end text-lg font-semibold space-x-5 pr-4 ">
+        <div className="flex w-fit items-center gap-5 text-lg font-semibold lg:ml-auto lg:w-[15%] lg:justify-end lg:pr-4">
           <Link className="text-warm-white hover:text-soft-latte transition-colors duration-200" href="https://github.com/chiragackerman/Get-Me-A-Coffee" target="_blank" rel="noopener noreferrer">
             <div
               className="cursor-pointer flex h-8 w-8 items-center justify-center"
@@ -81,9 +81,9 @@ const Footer = () => {
         </div>
       </div>
       <hr className="border-coffee w-[98%] mx-auto my-1" />
-      <div className="cursor-default px-6 py-3 flex justify-between text-soft-latte">
+      <div className="cursor-default flex flex-col items-center gap-2 px-4 py-3 text-center text-soft-latte sm:flex-row sm:justify-between sm:px-6 sm:text-left">
         <p>&copy; {formatDateIST(new Date(), { year: 'numeric' })} GetMeACoffee. All rights reserved.</p>
-        <p className="text-center sm:text-right pr-2">
+        <p className="text-center sm:pr-2 sm:text-right">
           Built with <span className="text-[#C47A44]">☕</span> &{" "}
           <span className="text-[#C47A44]">❤️</span> by{" "}
           <span className="font-medium">

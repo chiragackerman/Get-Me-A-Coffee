@@ -46,8 +46,8 @@ function NavigationIcon({ type }) {
 
 export default function ProfileNavigation({ username }) {
   return (
-    <aside className="flex flex-col rounded-2xl border border-coffee-border bg-warm-white p-3 shadow-sm lg:p-4">
-      <nav aria-label="Creator profile" className="flex flex-col gap-2">
+    <aside className="rounded-2xl border border-coffee-border bg-warm-white p-3 shadow-sm lg:p-4">
+      <nav aria-label="Creator profile" className="flex flex-col gap-2 sm:flex-row sm:flex-wrap lg:flex-col">
         <Link
           aria-current="page"
           className="flex items-center gap-3 rounded-xl bg-latte px-4 py-3 font-semibold text-espresso transition-colors hover:bg-soft-latte"

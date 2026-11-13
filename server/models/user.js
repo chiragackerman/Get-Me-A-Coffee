@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
 
 userSchema.index({ authUserId: 1 }, { unique: true });
 userSchema.index({ username: 1 }, { unique: true });
+userSchema.index({ createdAt: -1, _id: -1 });
+userSchema.index(
+  { displayName: 1, _id: 1 },
+  { collation: { locale: "en", strength: 2 } },
+);
 
 export default mongoose.models.CreatorProfile
   || mongoose.model("CreatorProfile", userSchema);

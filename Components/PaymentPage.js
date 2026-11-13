@@ -100,13 +100,6 @@ const PaymentPage = ({ creatorUsername, isTestMode }) => {
                         <p className="mt-1 text-sm leading-6 text-mocha">
                             Support this creator and help them keep creating.
                         </p>
-                        {isTestMode && (
-                            <p className="mt-2 text-sm leading-6 text-mocha">
-                                Test mode does not transfer real money. Use Razorpay&apos;s test
-                                payment flow; a real UPI app cannot verify the test QR as a live
-                                UPI payment.
-                            </p>
-                        )}
                     </div>
                     <p className="text-sm font-semibold text-coffee">₹20 per coffee</p>
                 </div>
