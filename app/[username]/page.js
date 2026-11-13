@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,6 +9,7 @@ import CreatorProfile from "@/server/models/user";
 import BuyThemCoffee from "./BuyThemCoffee";
 import ProfilePicture from "./ProfilePicture";
 import ProfileNavigation from "./ProfileNavigation";
+import PaymentPage from "@/Components/PaymentPage";
 
 async function getCreatorProfile(username) {
   await connectToDatabase();
@@ -85,6 +87,9 @@ function ProfileIcon({ type, className = "h-5 w-5" }) {
 }
 
 export default async function CreatorProfilePage({ params }) {
+
+  
+
   const { username: routeUsername } = await params;
   const username = routeUsername.trim().toLowerCase();
   let profile;
@@ -132,144 +137,150 @@ export default async function CreatorProfilePage({ params }) {
   const isOwnProfile = session?.user?.id === profile.authUserId;
 
   return (
-    <main className="flex flex-1 items-stretch bg-cream px-4 py-5 sm:px-6 sm:py-7 lg:px-[clamp(2rem,3vw,3.5rem)] lg:py-[clamp(1.5rem,3vh,2.5rem)]">
-      <div
-        className={`grid w-full grid-cols-1 items-stretch gap-5 ${
-          isOwnProfile
-            ? "lg:flex-1 lg:grid-cols-[clamp(248px,18vw,360px)_minmax(0,1fr)]"
-            : ""
-        }`}
-      >
-        {isOwnProfile && <ProfileNavigation username={profile.username} />}
+    <>
+      <main className="flex flex-1 items-stretch bg-cream px-4 py-5 sm:px-6 sm:py-7 lg:px-[clamp(2rem,3vw,3.5rem)] lg:py-[clamp(1.5rem,3vh,2.5rem)]">
+        <div
+          className={`grid w-full grid-cols-1 items-stretch gap-5 ${isOwnProfile
+              ? "lg:flex-1 lg:grid-cols-[clamp(248px,18vw,360px)_minmax(0,1fr)]"
+              : ""
+            }`}
+        >
+          {isOwnProfile && <ProfileNavigation username={profile.username} />}
 
-        <div className="grid min-w-0 gap-5 lg:flex lg:flex-col">
-          <section className="relative isolate flex min-h-[15rem] items-center overflow-hidden rounded-2xl border border-coffee-border px-6 py-8 shadow-sm sm:min-h-[12.5rem] sm:px-8">
-            <Image
-              alt=""
-              className="object-cover object-center"
-              fill
-              preload
-              sizes="(max-width: 1024px) 100vw, 75vw"
-              src="/Cozy Coffee Banner.png"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-r from-espresso/75 via-espresso/50 to-espresso/20"
-            />
-
-            <div className="relative z-10 flex w-full flex-col items-center gap-5 text-center sm:flex-row sm:gap-7 sm:text-left">
-              <ProfilePicture
-                displayName={profile.displayName}
-                src={profile.profileImage}
-              />
-              <div className="min-w-0">
-                <h1 className="font-heading text-3xl font-bold text-warm-white drop-shadow sm:text-4xl">
-                  {profile.displayName}
-                </h1>
-                <p className="mt-1 font-medium text-warm-white/90">
-                  @{profile.username}
-                </p>
-                <p className="mt-3 inline-flex max-w-full items-center gap-2 rounded-full border border-warm-white/30 bg-warm-white/75 px-4 py-2 text-sm font-semibold text-espresso shadow-sm backdrop-blur-sm">
-                  <ProfileIcon className="h-4 w-4 shrink-0 text-coffee" type="category" />
-                  <span className="truncate">{profile.creatorCategory}</span>
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <div className="grid h-fit gap-5 xl:grid-cols-[1.15fr_1fr]">
-            <section className=" rounded-2xl border border-coffee-border bg-warm-white p-6 shadow-sm sm:p-7">
-              <h2 className="flex items-center gap-3 font-heading text-2xl font-bold text-espresso">
-                <ProfileIcon className="h-5 w-5 text-coffee" type="about" />
-                About Me
-              </h2>
-              <p className="mt-4 min-h-20 whitespace-pre-wrap text-[15px] leading-7 text-espresso/90">
-                {profile.description}
-              </p>
-
-              <div className="mt-6 grid grid-cols-3 border-t border-coffee-border pt-5">
-                <div className="flex gap-2 pr-3 sm:gap-3 sm:pr-5">
-                  <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="supporters" />
-                  <div>
-                    <p className="font-semibold text-espresso">28</p>
-                    <p className="mt-1 text-sm text-mocha">Supporters</p>
-                  </div>
-                </div>
-                <div className="flex gap-2 border-l border-coffee-border px-3 sm:gap-3 sm:px-5">
-                  <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="coffee" />
-                  <div>
-                    <p className="font-semibold text-espresso">0</p>
-                    <p className="mt-1 text-sm text-mocha">Coffees</p>
-                  </div>
-                </div>
-                <div className="flex gap-2 border-l border-coffee-border pl-3 sm:gap-3 sm:pl-5">
-                  <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="calendar" />
-                  <div>
-                    <p className="font-semibold text-espresso">Joined</p>
-                    <p className="mt-1 text-sm text-mocha">
-                      {formatJoinDate(profile.createdAt)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="rounded-2xl border border-coffee-border bg-warm-white p-6 shadow-sm sm:p-7">
-              <h2 className="flex items-center gap-3 font-heading text-2xl font-bold text-espresso">
-                <ProfileIcon className="h-5 w-5 text-caramel" type="creator" />
-                Creator Info
-              </h2>
-              <dl className="mt-5 space-y-5">
-                <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
-                  <dt className="flex items-start gap-2 text-mocha">
-                    <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="category" />
-                    Category
-                  </dt>
-                  <dd className="font-medium text-espresso">{profile.creatorCategory}</dd>
-                </div>
-                <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
-                  <dt className="flex items-start gap-2 text-mocha">
-                    <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="about" />
-                    Username
-                  </dt>
-                  <dd className="break-all font-medium text-espresso">@{profile.username}</dd>
-                </div>
-                <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
-                  <dt className="flex items-start gap-2 text-mocha">
-                    <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="calendar" />
-                    Joined
-                  </dt>
-                  <dd className="font-medium text-espresso">
-                    {formatJoinDate(profile.createdAt)}
-                  </dd>
-                </div>
-              </dl>
-            </section>
-          </div>
-
-          {!isOwnProfile && <BuyThemCoffee />}
-
-          <section className="flex flex-col  items-center gap-5 rounded-2xl border border-latte bg-latte px-6 py-5 sm:flex-row sm:justify-between sm:px-8">
-            <div className="flex items-center gap-5 text-center sm:text-left">
+          <div className="grid min-w-0 gap-5 lg:flex lg:flex-col">
+            <section className="relative isolate flex min-h-[15rem] items-center overflow-hidden rounded-2xl border border-coffee-border px-6 py-8 shadow-sm sm:min-h-[12.5rem] sm:px-8">
               <Image
                 alt=""
-                className="h-14 w-14 object-contain"
-                height={56}
-                src="/support.png"
-                width={56}
+                className="object-cover object-center"
+                fill
+                preload
+                sizes="(max-width: 1024px) 100vw, 75vw"
+                src="/Cozy Coffee Banner.png"
               />
-              <div className="border-l border-coffee/40 pl-5">
-                <h2 className="font-heading text-xl font-bold text-espresso">
-                  Support My Work
-                </h2>
-                <p className="mt-1 text-sm leading-6 text-mocha">
-                  Your support helps me create more amazing content!
-                </p>
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-r from-espresso/75 via-espresso/50 to-espresso/20"
+              />
+
+              <div className="relative z-10 flex w-full flex-col items-center gap-5 text-center sm:flex-row sm:gap-7 sm:text-left">
+                <ProfilePicture
+                  displayName={profile.displayName}
+                  src={profile.profileImage}
+                />
+                <div className="min-w-0">
+                  <h1 className="font-heading text-3xl font-bold text-warm-white drop-shadow sm:text-4xl">
+                    {profile.displayName}
+                  </h1>
+                  <p className="mt-1 font-medium text-warm-white/90">
+                    @{profile.username}
+                  </p>
+                  <p className="mt-3 inline-flex max-w-full items-center gap-2 rounded-full border border-warm-white/30 bg-warm-white/75 px-4 py-2 text-sm font-semibold text-espresso shadow-sm backdrop-blur-sm">
+                    <ProfileIcon className="h-4 w-4 shrink-0 text-coffee" type="category" />
+                    <span className="truncate">{profile.creatorCategory}</span>
+                  </p>
+                </div>
               </div>
+            </section>
+
+            <div className="grid h-fit gap-5 xl:grid-cols-[1.15fr_1fr]">
+              <section className=" rounded-2xl border border-coffee-border bg-warm-white p-6 shadow-sm sm:p-7">
+                <h2 className="flex items-center gap-3 font-heading text-2xl font-bold text-espresso">
+                  <ProfileIcon className="h-5 w-5 text-coffee" type="about" />
+                  About Me
+                </h2>
+                <p className="mt-4 min-h-20 whitespace-pre-wrap text-[15px] leading-7 text-espresso/90">
+                  {profile.description}
+                </p>
+
+                <div className="mt-6 grid grid-cols-3 border-t border-coffee-border pt-5">
+                  <div className="flex gap-2 pr-3 sm:gap-3 sm:pr-5">
+                    <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="supporters" />
+                    <div>
+                      <p className="font-semibold text-espresso">28</p>
+                      <p className="mt-1 text-sm text-mocha">Supporters</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 border-l border-coffee-border px-3 sm:gap-3 sm:px-5">
+                    <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="coffee" />
+                    <div>
+                      <p className="font-semibold text-espresso">0</p>
+                      <p className="mt-1 text-sm text-mocha">Coffees</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 border-l border-coffee-border pl-3 sm:gap-3 sm:pl-5">
+                    <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="calendar" />
+                    <div>
+                      <p className="font-semibold text-espresso">Joined</p>
+                      <p className="mt-1 text-sm text-mocha">
+                        {formatJoinDate(profile.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="rounded-2xl border border-coffee-border bg-warm-white p-6 shadow-sm sm:p-7">
+                <h2 className="flex items-center gap-3 font-heading text-2xl font-bold text-espresso">
+                  <ProfileIcon className="h-5 w-5 text-caramel" type="creator" />
+                  Creator Info
+                </h2>
+                <dl className="mt-5 space-y-5">
+                  <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
+                    <dt className="flex items-start gap-2 text-mocha">
+                      <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="category" />
+                      Category
+                    </dt>
+                    <dd className="font-medium text-espresso">{profile.creatorCategory}</dd>
+                  </div>
+                  <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
+                    <dt className="flex items-start gap-2 text-mocha">
+                      <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="about" />
+                      Username
+                    </dt>
+                    <dd className="break-all font-medium text-espresso">@{profile.username}</dd>
+                  </div>
+                  <div className="grid grid-cols-[minmax(6.5rem,0.7fr)_minmax(0,1.3fr)] gap-3 text-sm sm:text-base">
+                    <dt className="flex items-start gap-2 text-mocha">
+                      <ProfileIcon className="mt-0.5 h-4 w-4 shrink-0" type="calendar" />
+                      Joined
+                    </dt>
+                    <dd className="font-medium text-espresso">
+                      {formatJoinDate(profile.createdAt)}
+                    </dd>
+                  </div>
+                </dl>
+              </section>
             </div>
-          </section>
+
+            {!isOwnProfile && (
+              <PaymentPage
+                creatorUsername={profile.username}
+                isTestMode={process.env.KEY_ID?.startsWith("rzp_test_") ?? false}
+              />
+            )}
+
+            <section className="flex flex-col  items-center gap-5 rounded-2xl border border-latte bg-latte px-6 py-5 sm:flex-row sm:justify-between sm:px-8">
+              <div className="flex items-center gap-5 text-center sm:text-left">
+                <Image
+                  alt=""
+                  className="h-14 w-14 object-contain"
+                  height={56}
+                  src="/support.png"
+                  width={56}
+                />
+                <div className="border-l border-coffee/40 pl-5">
+                  <h2 className="font-heading text-xl font-bold text-espresso">
+                    Support My Work
+                  </h2>
+                  <p className="mt-1 text-sm leading-6 text-mocha">
+                    Your support helps me create more amazing content!
+                  </p>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

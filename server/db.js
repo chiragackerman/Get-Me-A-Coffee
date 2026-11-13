@@ -2,9 +2,11 @@ import "server-only";
 import mongoose from "mongoose";
 import CreatorProfile from "@/server/models/user";
 import SignedInUser from "@/server/models/signedInUser";
+import Payment from "@/server/models/Payment";
+import Transaction from "@/server/models/Transaction";
 
 const DATABASE_NAME = "GetMeACoffee";
-const COLLECTIONS = ["users", "signed_in_users", "transactions"];
+const COLLECTIONS = ["users", "signed_in_users", "transactions", "payments"];
 const NAMESPACE_EXISTS = 48;
 
 const cached = globalThis.mongooseCache || {
@@ -32,7 +34,12 @@ async function ensureCollections(db) {
     }
   }
 
-  await Promise.all([CreatorProfile.init(), SignedInUser.init()]);
+  await Promise.all([
+    CreatorProfile.init(),
+    SignedInUser.init(),
+    Transaction.init(),
+    Payment.init(),
+  ]);
 }
 
 export default async function connectToDatabase() {
