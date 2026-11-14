@@ -71,15 +71,18 @@ Next.js settings are sufficient; no `vercel.json` is required.
 2. Import this Git repository into Vercel and keep the project root at the
    repository root. Vercel will detect Next.js and use `npm run build`.
 3. Before deploying, add the variables from `.env.example` in the Vercel
-   project's Environment Variables settings. Set the Production values for
-   `NEXTAUTH_URL` and `NEXT_PUBLIC_SITE_URL` to the same existing HTTPS site
-   origin, with no path. Set Preview values separately if OAuth is enabled on
-   preview deployments. The localhost values in `.env.example` are for local
-   development only; Vercel rejects a missing, placeholder, or non-HTTPS site
-   origin during a production build.
-4. In Google and GitHub OAuth settings, register these production callback URLs:
-   - `${NEXTAUTH_URL}/api/auth/callback/google`
-   - `${NEXTAUTH_URL}/api/auth/callback/github`
+   project's Environment Variables settings. Set Production `SITE_URL` and
+   `NEXTAUTH_URL` to `https://getmeacoffee.vercel.app`, with no path. Set
+   Preview values separately if OAuth is enabled on preview deployments. The
+   localhost values in `.env.example` are for local development only; a Vercel
+   production build rejects a missing, placeholder, or non-HTTPS `SITE_URL`.
+4. In the Google OAuth settings, register this production redirect URI:
+   `https://getmeacoffee.vercel.app/api/auth/callback/google`. For local Google
+   sign-in, also register
+   `http://localhost:3000/api/auth/callback/google`. Set the GitHub OAuth
+   callback URL to
+   `https://getmeacoffee.vercel.app/api/auth/callback/github`; use a separate
+   GitHub OAuth app for localhost if you need both environments.
 5. Configure MongoDB Atlas network access for the Vercel deployment and use a
    database user with only the permissions the app needs.
 6. Keep Razorpay in test mode by setting the matching test `KEY_ID` and
@@ -96,5 +99,11 @@ so `MONGODB_URI` and Atlas network access must be configured for it to respond.
 
 Required server environment variables are documented with placeholders in
 `.env.example`. `NEXTAUTH_SECRET`, OAuth client secrets, `MONGODB_URI`,
-`KEY_SECRET`, and `CLOUDINARY_API_SECRET` must remain private. No production
-domain or credential is embedded in the application.
+`KEY_SECRET`, and `CLOUDINARY_API_SECRET` must remain private. No credentials
+are embedded in application source; the production origin is configured with
+Vercel environment variables.
+
+Client components currently use same-origin relative API paths and navigation,
+so no absolute application URL is exposed through `NEXT_PUBLIC_BASE_URL`. If a
+future client feature genuinely needs an absolute URL, add that public variable
+for that use only; keep server metadata and sitemap generation on `SITE_URL`.
