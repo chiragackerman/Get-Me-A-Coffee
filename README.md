@@ -1,109 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ☕ GetMeACoffee
 
-## Getting Started
+### Support Creators. Fuel Ideas.
 
-First, run the development server:
+**GetMeACoffee** is a creator-support platform where creators can showcase their profiles and receive financial support from their audience through coffee contributions.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Built with modern web technologies, the platform aims to make supporting independent creators simple and accessible.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🌐 **Live Website:** https://getmeacoffeehub.vercel.app
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Features
 
-## Date and time handling
+- **Authentication:** Sign in with Google or GitHub.
+- **Creator Profiles:** Create personalized profiles with profile pictures, usernames, categories, and descriptions.
+- **Creator Discovery:** Explore creators through featured sections and a searchable creator directory.
+- **Live Search:** Find creators by their name or username.
+- **Coffee Contributions:** Integrated Razorpay payment gateway for supporting creators.
+- **Dynamic Content:** Creator information is stored and retrieved from MongoDB.
+- **Responsive Design:** Optimized for desktop and mobile devices.
+- **SEO Optimization:** Search engine-friendly metadata and website structure.
 
-Keep MongoDB timestamps as UTC `Date` values. Mongoose's `timestamps: true`
-and JavaScript's `new Date()` already represent instants correctly; do not add
-the IST offset before saving. Use the shared helpers in `lib/dateTime.js` when
-displaying dates so formatting always uses `Asia/Kolkata`, regardless of the
-visitor's browser timezone:
+## 🛠️ Tech Stack
 
-```js
-import { formatDateTimeIST } from "@/lib/dateTime";
+| Technology | Purpose |
+|---|---|
+| Next.js | Full-stack framework |
+| React.js | User interface |
+| JavaScript | Application logic |
+| Tailwind CSS | Styling and responsive design |
+| MongoDB | Database |
+| NextAuth.js | Authentication |
+| Razorpay | Payment integration |
+| Cloudinary | Image management |
+| Vercel | Deployment and hosting |
 
-formatDateTimeIST(profile.createdAt);
-```
+## 🔐 Environment Variables
 
-For a date filter supplied as an Indian calendar date (`YYYY-MM-DD`), use its
-IST day boundaries with a half-open MongoDB range:
+The project requires environment variables for:
 
-```js
-import { getISTDayRange } from "@/lib/dateTime";
+- MongoDB connection
+- Google OAuth credentials
+- GitHub OAuth credentials
+- NextAuth secret
+- Razorpay API credentials
+- Cloudinary credentials
+- Application URLs
 
-const { start, endExclusive } = getISTDayRange("2025-03-08");
-const records = await Model.find({
-  createdAt: { $gte: start, $lt: endExclusive },
-});
-```
+## 👨‍💻 Author
 
-The returned bounds are UTC `Date` objects corresponding to midnight at the
-start of that IST date and midnight at the next IST date.
+**Chirag Ackerman**
 
-## Learn More
+Full-Stack Web Developer | Content Creator
 
-To learn more about Next.js, take a look at the following resources:
+- GitHub: https://github.com/chiragackerman
+- Instagram: https://www.instagram.com/chirag.ackerman/
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The project uses the standard Next.js App Router build, so Vercel's automatic
-Next.js settings are sufficient; no `vercel.json` is required.
-
-1. Copy `.env.example` to `.env.local` for local development and replace each
-   placeholder. Never commit `.env.local` or production credentials.
-   Generate a unique `NEXTAUTH_SECRET` (for example, with
-   `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`)
-   and store it only in local/Vercel environment settings.
-2. Import this Git repository into Vercel and keep the project root at the
-   repository root. Vercel will detect Next.js and use `npm run build`.
-3. Before deploying, add the variables from `.env.example` in the Vercel
-   project's Environment Variables settings. Set Production `SITE_URL` and
-   `NEXTAUTH_URL` to `https://getmeacoffee.vercel.app`, with no path. Set
-   Preview values separately if OAuth is enabled on preview deployments. The
-   localhost values in `.env.example` are for local development only; a Vercel
-   production build rejects a missing, placeholder, or non-HTTPS `SITE_URL`.
-4. In the Google OAuth settings, register this production redirect URI:
-   `https://getmeacoffee.vercel.app/api/auth/callback/google`. For local Google
-   sign-in, also register
-   `http://localhost:3000/api/auth/callback/google`. Set the GitHub OAuth
-   callback URL to
-   `https://getmeacoffee.vercel.app/api/auth/callback/github`; use a separate
-   GitHub OAuth app for localhost if you need both environments.
-5. Configure MongoDB Atlas network access for the Vercel deployment and use a
-   database user with only the permissions the app needs.
-6. Keep Razorpay in test mode by setting the matching test `KEY_ID` and
-   `KEY_SECRET` pair (`KEY_ID` begins with `rzp_test_`). Do not switch to live
-   credentials until production payments are intentionally approved and tested.
-7. Deploy, then verify the homepage, OAuth sign-in, creator profiles, image
-   uploads, and a Razorpay test payment. The SEO routes are available at
-   `/robots.txt` and `/sitemap.xml`.
-
-The sitemap includes public creator profiles and public informational pages;
-sign-in and dashboard pages are marked `noindex`. A branded 1200 × 630 Open
-Graph image is generated by Next.js. The sitemap uses MongoDB at request time,
-so `MONGODB_URI` and Atlas network access must be configured for it to respond.
-
-Required server environment variables are documented with placeholders in
-`.env.example`. `NEXTAUTH_SECRET`, OAuth client secrets, `MONGODB_URI`,
-`KEY_SECRET`, and `CLOUDINARY_API_SECRET` must remain private. No credentials
-are embedded in application source; the production origin is configured with
-Vercel environment variables.
-
-Client components currently use same-origin relative API paths and navigation,
-so no absolute application URL is exposed through `NEXT_PUBLIC_BASE_URL`. If a
-future client feature genuinely needs an absolute URL, add that public variable
-for that use only; keep server metadata and sitemap generation on `SITE_URL`.
+<p align="center">
+  Made with ☕ and ❤️ by Chirag Ackerman
+</p>
