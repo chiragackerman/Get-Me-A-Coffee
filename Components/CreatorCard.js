@@ -51,7 +51,7 @@ export default function CreatorCard({ creator, responsive = false }) {
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-[13px] text-mocha">
               <span className="text-[20px]">☕</span>
-              <span>0 coffees received</span>
+              <span>Buy them a coffee</span>
             </div>
 
             <span className="cursor-pointer justify-end rounded-full bg-[#6F4E37] px-5 py-2.5 text-[13px] font-semibold text-white transition-all duration-200 hover:bg-[#553A28] hover:shadow-md active:scale-95">

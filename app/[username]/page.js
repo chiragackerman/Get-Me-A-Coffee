@@ -297,14 +297,14 @@ export default async function CreatorProfilePage({ params }) {
                   <div className="flex gap-2 sm:gap-3">
                     <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="supporters" />
                     <div>
-                      <p className="font-semibold text-espresso">28</p>
+                      <p className="font-semibold text-espresso">-</p>
                       <p className="mt-1 text-sm text-mocha">Supporters</p>
                     </div>
                   </div>
                   <div className="flex gap-2 border-t border-coffee-border pt-4 sm:border-l sm:border-t-0 sm:px-3 sm:pt-0 sm:pl-5">
                     <ProfileIcon className="mt-0.5 h-5 w-5 shrink-0 text-coffee" type="coffee" />
                     <div>
-                      <p className="font-semibold text-espresso">0</p>
+                      <p className="font-semibold text-espresso">-</p>
                       <p className="mt-1 text-sm text-mocha">Coffees</p>
                     </div>
                   </div>
