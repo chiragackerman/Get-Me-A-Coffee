@@ -4,6 +4,7 @@ import SessionWrapper from "@/Components/SessionWrapper";
 
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
+import NavigationScrollManager from "@/Components/NavigationScrollManager";
 import { getSiteUrl } from "@/lib/siteUrl";
 
 const crimsonPro = Crimson_Pro({
@@ -73,6 +74,7 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <SessionWrapper>
+          <NavigationScrollManager />
           <Navbar />
           {children}
           <Footer />

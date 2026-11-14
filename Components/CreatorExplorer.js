@@ -86,7 +86,7 @@ export default function CreatorExplorer({ focusSearch }) {
 
   useEffect(() => {
     if (focusSearch) {
-      searchInputRef.current?.focus();
+      searchInputRef.current?.focus({ preventScroll: true });
     }
   }, [focusSearch]);
 
@@ -235,7 +235,7 @@ export default function CreatorExplorer({ focusSearch }) {
         </div>
       </div>
 
-      <div className="mt-5 min-h-7" aria-live="polite">
+      <div className="mt-2 min-h-3 border-t border-coffee-border pt-2 sm:mt-5 sm:min-h-7" aria-live="polite">
         {isSearching && (
           <p className="inline-flex items-center gap-2 text-sm text-mocha" role="status">
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-coffee-border border-t-coffee motion-reduce:animate-none" />
@@ -247,7 +247,7 @@ export default function CreatorExplorer({ focusSearch }) {
       {errorMessage && (
         <section
           aria-labelledby="creator-error-title"
-          className="mt-3 rounded-2xl border border-coffee-border bg-warm-white px-6 py-10 text-center shadow-sm"
+          className="mt-2 rounded-2xl border border-coffee-border bg-warm-white px-6 py-10 text-center shadow-sm sm:mt-3"
         >
           <h2
             className="font-heading text-2xl font-bold text-espresso"
@@ -267,11 +267,11 @@ export default function CreatorExplorer({ focusSearch }) {
       )}
 
       {!errorMessage && isLoading && (
-        <CreatorGridSkeleton className="mt-3" count={pageSize} />
+        <CreatorGridSkeleton className="mt-2 sm:mt-3" count={pageSize} />
       )}
 
       {!errorMessage && !isLoading && creators.length > 0 && (
-        <div className="mt-3 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-2 grid grid-cols-1 justify-items-center gap-6 sm:mt-3 sm:grid-cols-2 lg:grid-cols-3">
           {creators.map((creator) => (
             <CreatorCard creator={creator} key={creator.username} responsive />
           ))}
@@ -279,7 +279,7 @@ export default function CreatorExplorer({ focusSearch }) {
       )}
 
       {!errorMessage && !isSearching && creators.length === 0 && (
-        <section className="mt-3 rounded-2xl border border-coffee-border bg-warm-white px-6 py-12 text-center shadow-sm">
+        <section className="mt-2 rounded-2xl border border-coffee-border bg-warm-white px-6 py-12 text-center shadow-sm sm:mt-3">
           <h2 className="font-heading text-2xl font-bold text-espresso">
             {debouncedSearchTerm ? "No creators found" : "Your next favorite creator is brewing"}
           </h2>

@@ -63,7 +63,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div id="featured-creators" className="featured-creator-section scroll-mt-24 mx-auto my-2 mt-6 w-full max-w-7xl px-4 sm:px-6">
+      <div id="featured-creators" className="featured-creator-section mx-auto my-2 mt-6 w-full max-w-7xl px-4 sm:px-6">
         <div className="heading mx-1 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="part1 flex items-center gap-3">
             <div className="icon"><img className="h-8 w-8" src="/star.png" alt="star" /></div>
