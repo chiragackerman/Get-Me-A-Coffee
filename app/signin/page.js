@@ -2,10 +2,41 @@
 import React from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
 import Image from 'next/image'
+import { SkeletonBlock } from "@/Components/Skeletons"
 
 const SignInPage = () => {
-    const { data: session } = useSession()
-      if (session) {
+    const { data: session, status } = useSession()
+      if (status === "loading") {
+        return (
+            <main className="relative isolate flex min-h-[calc(100svh-77px)] items-center overflow-hidden border-b border-coffee-border bg-[#f8ecd9] px-4 py-8 sm:px-8">
+                <Image
+                    className="object-cover object-right"
+                    src="/CafeBg.png"
+                    alt=""
+                    aria-hidden="true"
+                    fill
+                    sizes="100vw"
+                    loading="eager"
+                />
+                <section
+                    aria-busy="true"
+                    aria-label="Checking your sign-in status"
+                    className="relative z-10 mx-auto w-full max-w-md rounded-2xl border border-[var(--color-coffee-border)] bg-[var(--color-warm-white)] px-8 py-7 shadow-[0_8px_30px_rgba(111,78,55,0.08)]"
+                    role="status"
+                >
+                    <SkeletonBlock className="mx-auto h-12 w-48 rounded-lg" />
+                    <SkeletonBlock className="mx-auto mt-3 h-8 w-32 rounded-lg" />
+                    <SkeletonBlock className="mx-auto mt-3 h-4 w-56 max-w-full rounded-md" />
+                    <div className="mt-6 space-y-3">
+                        <SkeletonBlock className="h-12 w-full rounded-full" />
+                        <SkeletonBlock className="h-12 w-full rounded-full" />
+                    </div>
+                </section>
+            </main>
+        )
+      }
+
+      if (status === "authenticated") {
         return <>
           Signed in as {session.user.email} <br />
           <button onClick={() => signOut()}>Sign out</button>
@@ -25,7 +56,7 @@ const SignInPage = () => {
                 loading="eager"
             />
             <div className="relative z-10 w-full max-w-md">
-                <div className="w-full max-w-md rounded-2xl border border-[var(--color-coffee-border)] bg-[var(--color-warm-white)] px-8 py-7 ml-[30%] shadow-[0_8px_30px_rgba(111,78,55,0.08)]">
+                <div className="mx-auto w-full max-w-md rounded-2xl border border-[var(--color-coffee-border)] bg-[var(--color-warm-white)] px-8 py-7 shadow-[0_8px_30px_rgba(111,78,55,0.08)]">
 
                     {/* Logo + Brand */}
                     <div className="mb-6 flex flex-col items-center">

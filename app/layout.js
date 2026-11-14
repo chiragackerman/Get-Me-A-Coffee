@@ -4,6 +4,7 @@ import SessionWrapper from "@/Components/SessionWrapper";
 
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 const crimsonPro = Crimson_Pro({
   variable: "--font-crimson-pro",
@@ -18,19 +19,65 @@ const inter = Inter({
 
 
 export const metadata = {
-  title: "Get Me A Coffee - Fund your projects with a cup of coffee",
-  description: "Get Me A Coffee is a platfofrm that allows you to fund your projects with a cup of coffee. You can support your favorite creators by buying them a coffee.",
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: "GetMeACoffee | Support Independent Creators",
+    template: "%s | GetMeACoffee",
+  },
+  applicationName: "GetMeACoffee",
+  description:
+    "Discover independent creators and support their work with a virtual coffee on GetMeACoffee.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "GetMeACoffee",
+    title: "GetMeACoffee | Support Independent Creators",
+    description:
+      "Discover independent creators and support their work with a virtual coffee on GetMeACoffee.",
+    images: [
+      {
+        url: "/opengraph-image",
+        alt: "GetMeACoffee - Support independent creators",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GetMeACoffee | Support Independent Creators",
+    description:
+      "Discover independent creators and support their work with a virtual coffee on GetMeACoffee.",
+    images: ["/opengraph-image"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+};
+
+export const viewport = {
+  themeColor: "#f8ecd9",
 };
 
 export default function RootLayout({ children }) {
   return (
-    
     <html
       lang="en"
       className={` ${crimsonPro.variable} ${inter.variable} h-full antialiased`}
-    ><SessionWrapper>
-      <body className="min-h-full flex flex-col"><Navbar/>{children}</body>
-    </SessionWrapper>
+    >
+      <body className="min-h-full flex flex-col">
+        <SessionWrapper>
+          <Navbar />
+          {children}
+          <Footer />
+        </SessionWrapper>
+      </body>
     </html>
   );
 }

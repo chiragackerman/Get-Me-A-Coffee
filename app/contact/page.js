@@ -1,11 +1,13 @@
 import Link from "next/link";
 import InfoPageShell from "@/Components/InfoPageShell";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Contact | GetMeACoffee",
+export const metadata = createPageMetadata({
+  title: "Contact",
   description:
     "Get in touch with GetMeACoffee by email or Instagram with a question, suggestion, or collaboration idea.",
-};
+  path: "/contact",
+});
 
 function ContactIcon({ type }) {
   if (type === "email") {

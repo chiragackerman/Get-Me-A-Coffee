@@ -1,9 +1,12 @@
 import CreatorExplorer from "@/Components/CreatorExplorer";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Explore Creators | Get Me A Coffee",
-  description: "Discover independent creators and support their work with a coffee.",
-};
+export const metadata = createPageMetadata({
+  title: "Explore Creators",
+  description:
+    "Discover independent creators, explore their work, and support them with a virtual coffee.",
+  path: "/creators",
+});
 
 export default async function CreatorsPage({ searchParams }) {
   const { focus } = await searchParams;

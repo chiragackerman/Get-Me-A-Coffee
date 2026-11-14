@@ -1,12 +1,33 @@
-import Footer from "@/Components/Footer";
-import SessionWrapper from "@/Components/SessionWrapper";
-import FeaturedCreators from "./FeaturedCreators";
+import { Suspense } from "react";
+import FeaturedCreators from "../Components/FeaturedCreators";
+import { CreatorCardSkeleton } from "@/Components/Skeletons";
 import Link from "next/link";
+import JsonLd from "@/Components/JsonLd";
+import { getSiteUrl } from "@/lib/siteUrl";
+import { createPageMetadata } from "@/lib/seo";
+
+const description =
+  "Discover independent creators and support their work with a virtual coffee on GetMeACoffee.";
+
+export const metadata = createPageMetadata({
+  title: "Support Independent Creators",
+  absoluteTitle: "GetMeACoffee | Support Independent Creators",
+  description,
+  path: "/",
+});
 
 export default function Home() {
+  const websiteStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "GetMeACoffee",
+    url: getSiteUrl(),
+    description,
+  };
+
   return (
     <>
-    <SessionWrapper>
+      <JsonLd data={websiteStructuredData} />
       <div className="hero relative overflow-hidden border-b border-coffee-border bg-[#f8ecd9]">
         <div className="absolute inset-0">
           <img className="h-full w-full object-cover object-right md:object-center" src="/CafeBg.png" alt="Cafe background" />
@@ -57,7 +78,22 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <FeaturedCreators />
+        <Suspense
+          fallback={
+            <div
+              aria-busy="true"
+              aria-label="Loading featured creators"
+              className="content flex flex-wrap items-stretch justify-center gap-4 py-5 sm:justify-start"
+              role="status"
+            >
+              {Array.from({ length: 5 }, (_, index) => (
+                <CreatorCardSkeleton key={index} />
+              ))}
+            </div>
+          }
+        >
+          <FeaturedCreators />
+        </Suspense>
       </div>
 
       <div className="highlight-section w-full px-2 pb-5 sm:px-4">
@@ -94,8 +130,6 @@ export default function Home() {
           </ul>
         </div>
       </div>
-      <Footer/>
-      </SessionWrapper>
     </>
   );
 }

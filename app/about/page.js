@@ -1,10 +1,12 @@
 import InfoPageShell from "@/Components/InfoPageShell";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "About | GetMeACoffee",
+export const metadata = createPageMetadata({
+  title: "About",
   description:
     "Learn how GetMeACoffee helps independent creators receive support from the people who appreciate their work.",
-};
+  path: "/about",
+});
 
 const missionPoints = [
   {

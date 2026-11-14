@@ -1,11 +1,13 @@
 import Link from "next/link";
 import InfoPageShell from "@/Components/InfoPageShell";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Terms of Service | GetMeACoffee",
+export const metadata = createPageMetadata({
+  title: "Terms of Service",
   description:
     "Read the terms for using GetMeACoffee, creating a profile, and supporting creators.",
-};
+  path: "/terms",
+});
 
 const sections = [
   {

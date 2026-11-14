@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { DashboardSkeleton } from '@/Components/Skeletons'
 
 const fallbackProfileImage = '/user_pofile_icon.png'
 
@@ -38,11 +39,7 @@ export default function Dashboard() {
   }, [])
 
   if (status !== 'authenticated') {
-    return (
-      <main className="flex flex-1 items-center justify-center bg-cream px-4 py-12">
-        <p className="text-mocha">Checking your session...</p>
-      </main>
-    )
+    return <DashboardSkeleton />
   }
 
   const userName = session.user?.name || 'there'

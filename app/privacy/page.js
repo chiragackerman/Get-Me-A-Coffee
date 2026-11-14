@@ -1,10 +1,12 @@
 import InfoPageShell from "@/Components/InfoPageShell";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Privacy Policy | GetMeACoffee",
+export const metadata = createPageMetadata({
+  title: "Privacy Policy",
   description:
     "Read how GetMeACoffee handles account, creator profile, session, and payment information.",
-};
+  path: "/privacy",
+});
 
 const sections = [
   {

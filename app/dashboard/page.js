@@ -7,6 +7,12 @@ import connectToDatabase from "@/server/db";
 import CreatorProfile from "@/server/models/user";
 import DashboardClient from "./DashboardClient";
 
+export const metadata = {
+  title: "Creator Dashboard",
+  description: "Manage your GetMeACoffee creator profile.",
+  robots: { index: false, follow: false },
+};
+
 const supportedProviders = new Set(["google", "github"]);
 
 function DashboardError() {

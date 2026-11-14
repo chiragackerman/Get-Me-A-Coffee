@@ -1,8 +1,11 @@
-
+import { cache } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
+import JsonLd from "@/Components/JsonLd";
+import { createPageMetadata } from "@/lib/seo";
+import { getSiteUrl } from "@/lib/siteUrl";
 import { authOptions } from "@/server/auth";
 import connectToDatabase from "@/server/db";
 import CreatorProfile from "@/server/models/user";
@@ -11,12 +14,83 @@ import ProfilePicture from "./ProfilePicture";
 import ProfileNavigation from "./ProfileNavigation";
 import PaymentPage from "@/Components/PaymentPage";
 
-async function getCreatorProfile(username) {
+const getCreatorProfile = cache(async (username) => {
   await connectToDatabase();
 
   return CreatorProfile.findOne({ username })
     .select("authUserId profileImage displayName username creatorCategory description createdAt")
     .lean();
+});
+
+function getPublicProfileImage(value) {
+  if (typeof value !== "string" || !value.trim()) {
+    return "/user_profile_icon.png";
+  }
+
+  const image = value.trim();
+  try {
+    const url = new URL(image);
+    return url.protocol === "https:" ? url.toString() : "/user_profile_icon.png";
+  } catch {
+    return image.startsWith("/") && !image.startsWith("//")
+      ? image
+      : "/user_profile_icon.png";
+  }
+}
+
+export async function generateMetadata({ params }) {
+  const { username: routeUsername } = await params;
+  const username = routeUsername.trim().toLowerCase();
+  const path = `/${encodeURIComponent(username)}`;
+
+  let profile;
+  try {
+    profile = await getCreatorProfile(username);
+  } catch (error) {
+    console.error(`Could not load SEO data for creator "${username}".`, error);
+    return createPageMetadata({
+      title: "Creator Profile",
+      description: "View an independent creator on GetMeACoffee.",
+      path,
+      robots: { index: false, follow: false },
+    });
+  }
+
+  if (!profile) {
+    return createPageMetadata({
+      title: "Creator Not Found",
+      description: "This creator profile could not be found.",
+      path,
+      robots: { index: false, follow: false },
+    });
+  }
+
+  const canonicalPath = `/${encodeURIComponent(profile.username)}`;
+  const description = typeof profile.description === "string"
+    ? profile.description.replace(/\s+/g, " ").trim().slice(0, 160)
+    : "Discover and support this independent creator on GetMeACoffee.";
+  const profileImage = getPublicProfileImage(profile.profileImage);
+  const title = `${profile.displayName} on GetMeACoffee`;
+
+  return {
+    title: profile.displayName,
+    description,
+    alternates: { canonical: canonicalPath },
+    openGraph: {
+      type: "profile",
+      siteName: "GetMeACoffee",
+      title,
+      description,
+      url: canonicalPath,
+      images: [{ url: profileImage, alt: `${profile.displayName}'s profile picture` }],
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+      images: [profileImage],
+    },
+  };
 }
 
 function formatJoinDate(date) {
@@ -135,9 +209,29 @@ export default async function CreatorProfilePage({ params }) {
 
   const session = await getServerSession(authOptions);
   const isOwnProfile = session?.user?.id === profile.authUserId;
+  const siteUrl = getSiteUrl();
+  const canonicalUrl = `${siteUrl}/${encodeURIComponent(profile.username)}`;
+  const profileImage = getPublicProfileImage(profile.profileImage);
+  const profileStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    name: `${profile.displayName} on GetMeACoffee`,
+    url: canonicalUrl,
+    mainEntity: {
+      "@type": "Person",
+      name: profile.displayName,
+      url: canonicalUrl,
+      image: profileImage.startsWith("/")
+        ? `${siteUrl}${profileImage}`
+        : profileImage,
+      description: profile.description,
+      identifier: profile.username,
+    },
+  };
 
   return (
     <>
+      <JsonLd data={profileStructuredData} />
       <main className="flex flex-1 items-stretch bg-cream px-3 py-4 sm:px-5 sm:py-6 lg:px-[clamp(2rem,3vw,3.5rem)] lg:py-[clamp(1.5rem,3vh,2.5rem)]">
         <div
           className={`grid w-full grid-cols-1 items-stretch gap-4 ${isOwnProfile

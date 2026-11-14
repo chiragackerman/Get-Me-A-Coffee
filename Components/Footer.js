@@ -23,7 +23,7 @@ const Footer = () => {
 
   return (
     <footer className=" z-10 bg-espresso border-t border-coffee-border w-full text-warm-white">
-      <div className='flex w-full flex-col gap-5 p-4 px-5 py-5 lg:mx-auto lg:flex-row lg:items-center lg:justify-between'>
+      <div className='flex w-full flex-col gap-5 p-4 px-5 py-5 lg:mx-auto lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center'>
         <div className="logo flex items-center gap-3 text-lg font-bold sm:text-2xl">
           <Link className="img cursor-pointer flex shrink-0 items-center bg-coffee p-2 rounded-xl" href="/">
             <img className="h-8 w-8 " src="/Logo.png" alt="Coffee-Cup" />
@@ -33,7 +33,7 @@ const Footer = () => {
             <p className='text-soft-latte text-xs font-semibold cursor-default sm:text-sm'>Support Creators. Fuel Ideas. Keep the Internet Creative.</p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-base font-medium sm:text-lg lg:gap-x-9">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-base font-medium sm:text-lg lg:justify-self-center lg:gap-x-9">
           <Link className="text-soft-latte hover:text-warm-white transition-colors duration-200" href="/about">
             About
           </Link>
@@ -47,7 +47,7 @@ const Footer = () => {
             Contact
           </Link>
         </div>
-        <div className="flex w-fit items-center gap-5 text-lg font-semibold lg:ml-auto lg:w-[15%] lg:justify-end lg:pr-4">
+        <div className="flex w-fit items-center gap-5 text-lg font-semibold lg:justify-self-end lg:pr-4">
           <Link className="text-warm-white hover:text-soft-latte transition-colors duration-200" href="https://github.com/chiragackerman/Get-Me-A-Coffee" target="_blank" rel="noopener noreferrer">
             <div
               className="cursor-pointer flex h-8 w-8 items-center justify-center"

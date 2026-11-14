@@ -131,12 +131,19 @@ const PaymentPage = ({ creatorUsername, isTestMode }) => {
                         Total: ₹{total}
                     </p>
                     <button
+                        aria-busy={!isScriptLoaded || isProcessing}
                         className="rounded-full bg-coffee px-7 py-3 font-semibold text-warm-white transition-colors hover:bg-dark-roast disabled:cursor-not-allowed disabled:opacity-60"
                         disabled={!isScriptLoaded || isProcessing}
                         title="Proceed to pay"
                         type="button"
                         onClick={pay}
                     >
+                        {isProcessing || !isScriptLoaded ? (
+                            <span
+                                aria-hidden="true"
+                                className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-warm-white/40 border-t-warm-white align-[-3px] motion-reduce:animate-none"
+                            />
+                        ) : null}
                         {isProcessing ? "Processing..." : isScriptLoaded ? "Buy Coffee" : "Loading payment..."}
                     </button>
                 </div>

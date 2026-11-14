@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import CreatorCard from "@/Components/CreatorCard";
+import { CreatorGridSkeleton } from "@/Components/Skeletons";
 
 const pageSize = 12;
 
@@ -237,7 +238,7 @@ export default function CreatorExplorer({ focusSearch }) {
       <div className="mt-5 min-h-7" aria-live="polite">
         {isSearching && (
           <p className="inline-flex items-center gap-2 text-sm text-mocha" role="status">
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-coffee-border border-t-coffee" />
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-coffee-border border-t-coffee motion-reduce:animate-none" />
             Searching creators…
           </p>
         )}
@@ -265,20 +266,8 @@ export default function CreatorExplorer({ focusSearch }) {
         </section>
       )}
 
-      {!errorMessage && isLoading && creators.length === 0 && (
-        <div
-          aria-label="Loading creators"
-          className="mt-3 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          role="status"
-        >
-          {Array.from({ length: pageSize }, (_, index) => (
-            <div
-              aria-hidden="true"
-              className="h-[280px] w-full max-w-[350px] animate-pulse rounded-2xl border border-coffee-border bg-warm-white"
-              key={index}
-            />
-          ))}
-        </div>
+      {!errorMessage && isLoading && (
+        <CreatorGridSkeleton className="mt-3" count={pageSize} />
       )}
 
       {!errorMessage && !isLoading && creators.length > 0 && (
