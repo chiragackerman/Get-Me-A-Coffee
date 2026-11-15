@@ -4,6 +4,20 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import Image from 'next/image'
 import { SkeletonBlock } from "@/Components/Skeletons"
 
+function getCallbackUrl() {
+    const callbackUrl = new URLSearchParams(window.location.search).get("callbackUrl")
+
+    if (
+        callbackUrl?.startsWith("/")
+        && !callbackUrl.startsWith("//")
+        && !callbackUrl.includes("\\")
+    ) {
+        return callbackUrl
+    }
+
+    return "/dashboard"
+}
+
 const SignInPage = () => {
     const { data: session, status } = useSession()
       if (status === "loading") {
@@ -91,7 +105,7 @@ const SignInPage = () => {
 
                         {/* Google */}
                         <button
-                            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                            onClick={() => signIn("google", { callbackUrl: getCallbackUrl() })}
                             type="button"
                             className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-[var(--color-coffee-border)] bg-white px-5 py-3 text-sm font-semibold text-[var(--color-espresso)] transition-all duration-200 hover:bg-[var(--color-latte)] hover:shadow-sm active:scale-[0.98]"
                         >
@@ -101,7 +115,7 @@ const SignInPage = () => {
 
                         {/* GitHub */}
                         <button
-                            onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+                            onClick={() => signIn("github", { callbackUrl: getCallbackUrl() })}
                             type="button"
                             className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-[var(--color-coffee-border)] bg-white px-5 py-3 text-sm font-semibold text-[var(--color-espresso)] transition-all duration-200 hover:bg-[var(--color-latte)] hover:shadow-sm active:scale-[0.98]"
                         >

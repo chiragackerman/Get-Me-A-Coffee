@@ -9,7 +9,6 @@ import { getSiteUrl } from "@/lib/siteUrl";
 import { authOptions } from "@/server/auth";
 import connectToDatabase from "@/server/db";
 import CreatorProfile from "@/server/models/user";
-import BuyThemCoffee from "./BuyThemCoffee";
 import ProfilePicture from "./ProfilePicture";
 import ProfileNavigation from "./ProfileNavigation";
 import PaymentPage from "@/Components/PaymentPage";
@@ -245,7 +244,7 @@ export default async function CreatorProfilePage({ params }) {
             <section className="relative isolate flex min-h-[15rem] items-center overflow-hidden rounded-2xl border border-coffee-border px-4 py-6 shadow-sm sm:min-h-[12.5rem] sm:px-8">
               <Image
                 alt=""
-                className="object-cover object-center"
+                className="object-cover object-right sm:object-center"
                 fill
                 preload
                 sizes="(max-width: 1024px) 100vw, 75vw"
@@ -279,6 +278,7 @@ export default async function CreatorProfilePage({ params }) {
             {!isOwnProfile && (
               <PaymentPage
                 creatorUsername={profile.username}
+                isAuthenticated={Boolean(session?.user?.id)}
                 isTestMode={process.env.KEY_ID?.startsWith("rzp_test_") ?? false}
               />
             )}
